@@ -34,7 +34,7 @@ header a {
     left: 100%;
 
     transform: translate(-100%, 0%);
-    padding: 1.5% 1%;
+    padding: 10px 5px;;
 
     max-height: 10vh;
     position:  fullsize;
