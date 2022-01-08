@@ -63,6 +63,7 @@ def Nomear_nota(self, nota):
     self.NomeC = f'{self.NotaC}{self.Comp}'
     self.NomeG = f'{self.NotaG}{self.Comp}'
 
+#                   Notas
 class Notas():
     def __init__(self, str='Erro', nota='Erro-Nota', casa='Erro-Cassa', vol=1):
         self.Str = str
@@ -70,6 +71,7 @@ class Notas():
         self.Casa = casa
         self.Vol = vol
 
+    #OBS: str é a localisação do som
     def SetMain(self, str='val', nota='val', casa='val'):
         if str == 'val':
             str = self.Str
@@ -91,13 +93,26 @@ class Notas():
     def GetAll(self):
         print(self.Str, self.NotaC, self.NotaG, self.Casa, self.Vol, self.NomeC, self.NomeG)
 
+#                   Pergunta
 class Pergunta():
-    def __init__(self, notaT='Erro-NotaT', res='', notas='Erro-Notas'):
+    #OBS: notaT é a resposta certa e res é a resposta do usuario
+    def __init__(self, notaT='Erro-NotaT', notas='Erro-Notas', res=''):
         self.NotaT = notaT
         #self.Som = posisão do som da notaT
         self.Res = res
         self.Notas = notas
+        
+    def SetRes(self, res):
+        self.Res = res
+    
+    def Status(self):
+        print(self.NotaT, self.Notas, self.Res.NomeG)
+
 
 #p
 n = Notas(2, 'g', 1, 2)
 n.GetAll()
+
+p = Pergunta('no', n.NomeC)
+p.SetRes(n)
+p.Status()
