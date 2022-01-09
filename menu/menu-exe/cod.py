@@ -1,4 +1,4 @@
-from pygame import mixer, init, event
+from playsound import playsound
 from random import choice
 
 
@@ -146,6 +146,18 @@ class Pergunta():
                 r = True
             return r
 
+class Questionario():
+    def __init__(self, nome, notas, volume, n_perguntas):
+        self.Nome = nome
+        self.Notas = notas
+        self.Vol = volume
+        self.Np = n_perguntas
+        self.N_acertos = 0
+
+    def rep(self, nota):
+        playsound(nota.str)
+
+    #def init(self):
 
 #p
 a = Notas('a')
@@ -154,12 +166,17 @@ c = Notas('c')
 d = Notas('d')
 notas = (a, b, c, d)
 
-for c in range(0, 4):
-    p = Pergunta(notas)
-    p.init()
-    p.Apresentar()
-    p.SetRes(str(input('Qual é a nota: ')))
-    if p.Confirir():
-        print(1)
-    else:
-        print(0)
+#for c in range(0, 4):
+#    p = Pergunta(notas)
+#    p.init()
+#    p.Apresentar()
+#    p.SetRes(str(input('Qual é a nota: ')))
+#    if p.Confirir():
+#        print(1)
+#    else:
+#        print(0)
+
+#'cartoon.wav'
+import pygame
+
+playsound('cartoon.wav')
