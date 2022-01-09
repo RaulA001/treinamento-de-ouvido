@@ -2,54 +2,65 @@ from pygame import mixer, init, event
 from random import choice
 
 
-def Nomear_nota(self, nota):
+def Nomear_nota(self, nota, obj=True):
     '''resposavel nomear notas na notção grega e germanica e separalas do seu complemento'''
     
     #notas principais
     nota = nota.capitalize()
     c = False
-    
+
     if 'Do' in nota or 'C' in nota or 'Dó' in nota:
         if nota[:1] in 'DoDó':
-            print('erro')
             c = True
-        self.NotaC = 'Dó'
-        self.NotaG = 'C'
+        if obj:
+            self.NotaC = 'Dó'
+            self.NotaG = 'C'
     elif 'Re' in nota or 'D' in nota or 'Ré' in nota:
         if nota[:1] in 'ReRé':
             c = True
-        self.NotaC = 'Ré'
-        self.NotaG = 'D'
+        if obj:
+            self.NotaC = 'Ré'
+            self.NotaG = 'D'
     elif 'Mi' in nota or 'E' in nota:
         if nota[:1] in 'MiMí':
             c = True
-        self.NotaC = 'Mi'
-        self.NotaG = 'E'
+        if obj:
+            self.NotaC = 'Mi'
+            self.NotaG = 'E'
     elif 'Fá' in nota or 'F' in nota or 'Fa' in nota:
         if nota[:1] in 'FaFá':
             c = True
-        self.NotaC = 'Fá'
-        self.NotaG = 'F'
+        if obj:
+            self.NotaC = 'Fá'
+            self.NotaG = 'F'
     elif 'Sol' in nota or 'G' in nota:
         if nota[:2] in 'Sol':
             c = True
-        self.NotaC = 'Sol'
-        self.NotaG = 'G'
+        if obj:
+            self.NotaC = 'Sol'
+            self.NotaG = 'G'
     elif 'La' in nota or 'A' in nota or 'Lá' in nota:
         if nota[:1] in 'LaLá':
             c = True
-        self.NotaC = 'Lá'
-        self.NotaG = 'A'
+        if obj:
+            self.NotaC = 'Lá'
+            self.NotaG = 'A'
     elif 'Si' in nota or 'B' in nota:
         if nota[:1] in 'SiSí':
             c = True
-        self.NotaC = 'Si'
-        self.NotaG = 'B'
+        if obj:
+            self.NotaC = 'Si'
+            self.NotaG = 'B'
     else:
-        self.NotaC = 'Erro-Nota'
-        self.NotaG = 'Erro-Nota'
+        if obj:
+            self.NotaC = 'Erro-Nota'
+            self.NotaG = 'Erro-Nota'
+        else:
+            print('Não é uma nota')
+
 
     #variaçoes/Complemento
+    self.C = c
     if c:
         if not 'Sol' in nota:
             comp = nota[2:]
@@ -57,15 +68,19 @@ def Nomear_nota(self, nota):
             comp = nota[3:]
     else:
         comp = nota[1:]
-    self.Comp = comp
-    
-    #nome completo
-    self.NomeC = f'{self.NotaC}{self.Comp}'
-    self.NomeG = f'{self.NotaG}{self.Comp}'
+
+    if obj:
+        self.Comp = comp
+
+        #nome completo
+        self.NomeC = f'{self.NotaC}{self.Comp}'
+        self.NomeG = f'{self.NotaG}{self.Comp}'
+    else:
+        return c
 
 #                   Notas
 class Notas():
-    def __init__(self, str='Erro', nota='Erro-Nota', casa='Erro-Cassa', vol=1):
+    def __init__(self, nota='Erro-Nota', casa='Erro-Cassa', str='Erro', vol=1):
         self.Str = str
         Nomear_nota(self, nota)
         self.Casa = casa
@@ -96,7 +111,7 @@ class Notas():
 #                   Pergunta
 class Pergunta():
     #OBS: notaT é a resposta certa e res é a resposta do usuario
-    def __init__(self, notaT='Erro-NotaT', notas='Erro-Notas', res=''):
+    def __init__(self, notas='Erro-Notas', res='', notaT=''):
         self.NotaT = notaT
         #self.Som = posisão do som da notaT
         self.Res = res
@@ -108,11 +123,43 @@ class Pergunta():
     def Status(self):
         print(self.NotaT, self.Notas, self.Res.NomeG)
 
+    def Apresentar(self):
+        print('/ ', end='')
+        for n in self.Notas:
+            print(n.NomeG, end=' ')
+        print('/')
+
+    def init(self):
+        #difinir nota certa
+        self.NotaT = choice(self.Notas)
+
+    def Confirir(self):
+        r = False
+
+        re = Notas(self.Res)
+        if re.C:
+            if re.NotaC == self.NotaT.NotaC:
+                r = True
+            return r
+        else:
+            if re.NotaG == self.NotaT.NotaG:
+                r = True
+            return r
+
 
 #p
-n = Notas(2, 'g', 1, 2)
-n.GetAll()
+a = Notas('a')
+b = Notas('b')
+c = Notas('c')
+d = Notas('d')
+notas = (a, b, c, d)
 
-p = Pergunta('no', n.NomeC)
-p.SetRes(n)
-p.Status()
+for c in range(0, 4):
+    p = Pergunta(notas)
+    p.init()
+    p.Apresentar()
+    p.SetRes(str(input('Qual é a nota: ')))
+    if p.Confirir():
+        print(1)
+    else:
+        print(0)
