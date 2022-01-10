@@ -114,7 +114,6 @@ class Notas():
         print(self.Str, self.NotaC, self.NotaG, self.Casa, self.Vol, self.NomeC, self.NomeG)
 
     def Rep(self):
-        print(self.Str)
         playsound(self.Str)
 
 #                   Pergunta
@@ -152,7 +151,7 @@ class Pergunta():
 
     def Confirir(self, re):
         r = 0
-        print(re.NotaC, self.NotaT.NotaC, re.Instr, self.NotaT.Instr)
+
         if re.C:
             if re.NotaC == self.NotaT.NotaC and (re.Instr == self.NotaT.Instr or True):
                 r = 1
@@ -189,12 +188,13 @@ class Questionario():
 
 #p
 a = Notas('a', '', 'violao')
-b = Notas('b', '1', 'cavaquinho')
-c = Notas('c', '', 'violao')
-d = Notas('d', '2', 'cavaquinho')
-notas = [a, b, c, d]
+b = Notas('b', '', 'violao')
+d = Notas('d', '', 'violao')
+e = Notas('e', '', 'violao')
+g = Notas('g', '', 'violao')
+notas = [a, b, d, e, g]
 
-for c in range(0, 2):
+for c in range(0, 10):
     p = Pergunta(notas)
     p.init()
     p.NotaT.Rep()
@@ -207,8 +207,7 @@ for c in range(0, 2):
         perg = True
         while perg:
             resposta = str(input('Qual é a nota: '))
-            if resposta == 'REP':
-                print('ok')
+            if resposta == '':
                 p.NotaT.Rep()
             else:
                 break
@@ -216,7 +215,7 @@ for c in range(0, 2):
         p.SetRes(resposta)
         re = Notas(p.Res)
         resp = p.Confirir(re)
-        print(resp, 'resp')
+
         if resp == 1:
             print(1)
             certo = True
