@@ -1,5 +1,5 @@
 from playsound import playsound
-from random import choice
+from random import randint
 
 
 def Nomear_nota(self, nota, obj=True):
@@ -80,11 +80,16 @@ def Nomear_nota(self, nota, obj=True):
 
 #                   Notas
 class Notas():
-    def __init__(self, nota='Erro-Nota', casa='Erro-Cassa', str='Erro', vol=1):
-        self.Str = str
+    def __init__(self, nota='Erro-Nota', casa='Erro-Cassa', instrumento='ERRO_instrumento', str='Erro', vol=1, pasta="sons/notas/"):
         Nomear_nota(self, nota)
         self.Casa = casa
+        self.Instr = instrumento
         self.Vol = vol
+        self.Pasta = pasta
+        if str == 'Erro':
+            str = f'{self.Pasta}{self.NotaG}/{self.NomeG}_{self.Instr}.wav'
+        self.Str = str
+
 
     #OBS: str é a localisação do som
     def SetMain(self, str='val', nota='val', casa='val'):
@@ -108,6 +113,9 @@ class Notas():
     def GetAll(self):
         print(self.Str, self.NotaC, self.NotaG, self.Casa, self.Vol, self.NomeC, self.NomeG)
 
+    def Rep(self):
+        playsound(self.Str)
+
 #                   Pergunta
 class Pergunta():
     #OBS: notaT é a resposta certa e res é a resposta do usuario
@@ -116,6 +124,8 @@ class Pergunta():
         #self.Som = posisão do som da notaT
         self.Res = res
         self.Notas = notas
+        #nota não jogadas
+        self.NotasL = notas
         
     def SetRes(self, res):
         self.Res = res
@@ -124,6 +134,7 @@ class Pergunta():
         print(self.NotaT, self.Notas, self.Res.NomeG)
 
     def Apresentar(self):
+        self.NotaT.Rep()
         print('/ ', end='')
         for n in self.Notas:
             print(n.NomeG, end=' ')
@@ -131,20 +142,24 @@ class Pergunta():
 
     def init(self):
         #difinir nota certa
-        self.NotaT = choice(self.Notas)
+        n = len(self.Notas) - 1
+        nt = randint(0, n)
+        self.NotaT = self.Notas[nt]
+        self.NNotaT = n
 
     def Confirir(self):
-        r = False
-
+        r = 0
         re = Notas(self.Res)
+        print(re.NotaC, self.NotaT.NotaC, re.Instr, self.NotaT.Instr)
         if re.C:
-            if re.NotaC == self.NotaT.NotaC:
-                r = True
-            return r
+            if re.NotaC == self.NotaT.NotaC and (re.Instr == self.NotaT.Instr or True):
+                r = 1
         else:
-            if re.NotaG == self.NotaT.NotaG:
-                r = True
-            return r
+            if re.NotaG == self.NotaT.NotaG and (re.Instr == self.NotaT.Instr or True):
+                r = 1
+        if re.NotaG == 'Erro-Nota':
+            r = -1
+        return r
 
 class Questionario():
     def __init__(self, nome, notas, volume, n_perguntas):
@@ -157,26 +172,45 @@ class Questionario():
     def rep(self, nota):
         playsound(nota.str)
 
-    #def init(self):
+    def init(self):
+        for c in range(0, 1):
+            p = Pergunta(notas)
+            p.init()
+            p.Apresentar()
+            resp = p.Confirir()
+            if resp == 1:
+                print(1)
+            elif resp == 2:
+                print(0)
+            elif resp == -1:
+                c += 1
 
 #p
-a = Notas('a')
-b = Notas('b')
-c = Notas('c')
-d = Notas('d')
-notas = (a, b, c, d)
+a = Notas('a', '', 'violao')
+b = Notas('b', '', 'violao')
+c = Notas('c', '', 'violao')
+d = Notas('d', '', 'violao')
+notas = [a, b, c, d]
 
-#for c in range(0, 4):
-#    p = Pergunta(notas)
-#    p.init()
-#    p.Apresentar()
-#    p.SetRes(str(input('Qual é a nota: ')))
-#    if p.Confirir():
-#        print(1)
-#    else:
-#        print(0)
+for c in range(0, 2):
+    p = Pergunta(notas)
+    p.init()
+    p.Apresentar()
 
-#'cartoon.wav'
-import pygame
+    while True:
+        valid = True
+        p.SetRes(str(input('Qual é a nota: ')))
 
-playsound('cartoon.wav')
+        resp = p.Confirir()
+        print(resp, 'resp')
+        if resp == 1:
+            print(1)
+        elif resp == 2:
+            p.NotasL.pop(p.NNotaT)
+            print(0)
+        elif resp == -1:
+            print('Resposta invalida')
+            valid=False
+
+        if valid:
+            break
