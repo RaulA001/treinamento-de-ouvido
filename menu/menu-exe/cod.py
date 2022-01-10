@@ -80,7 +80,7 @@ def Nomear_nota(self, nota, obj=True):
 
 #                   Notas
 class Notas():
-    def __init__(self, nota='Erro-Nota', casa='Erro-Cassa', instrumento='ERRO_instrumento', str='Erro', vol=1, pasta="sons/notas/"):
+    def __init__(self, nota='Erro-Nota', casa='Erro-Cassa', instrumento='ERRO_instrumento', str='Erro', vol=1, pasta="notas/"):
         Nomear_nota(self, nota)
         self.Casa = casa
         self.Instr = instrumento
@@ -114,6 +114,7 @@ class Notas():
         print(self.Str, self.NotaC, self.NotaG, self.Casa, self.Vol, self.NomeC, self.NomeG)
 
     def Rep(self):
+        print(self.Str)
         playsound(self.Str)
 
 #                   Pergunta
