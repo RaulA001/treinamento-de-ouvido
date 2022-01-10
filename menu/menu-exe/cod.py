@@ -204,7 +204,16 @@ for c in range(0, 2):
     while not certo:
 
         p.Apresentar()
-        p.SetRes(str(input('Qual é a nota: ')))
+        perg = True
+        while perg:
+            resposta = str(input('Qual é a nota: '))
+            if resposta == 'REP':
+                print('ok')
+                p.NotaT.Rep()
+            else:
+                break
+            
+        p.SetRes(resposta)
         re = Notas(p.Res)
         resp = p.Confirir(re)
         print(resp, 'resp')
