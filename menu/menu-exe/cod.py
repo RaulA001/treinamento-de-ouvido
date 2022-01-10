@@ -135,9 +135,8 @@ class Pergunta():
         print(self.NotaT, self.Notas, self.Res.NomeG)
 
     def Apresentar(self):
-        self.NotaT.Rep()
         print('/ ', end='')
-        for n in self.Notas:
+        for n in self.NotasL:
             print(n.NomeG, end=' ')
         print('/')
 
@@ -196,22 +195,29 @@ notas = [a, b, c, d]
 for c in range(0, 2):
     p = Pergunta(notas)
     p.init()
-    p.Apresentar()
+    p.NotaT.Rep()
+
 
     while True:
         valid = True
-        p.SetRes(str(input('Qual é a nota: ')))
+        certo = False
+        while not certo:
+            p.Apresentar()
+            p.SetRes(str(input('Qual é a nota: ')))
 
-        resp = p.Confirir()
-        print(resp, 'resp')
-        if resp == 1:
-            print(1)
-        elif resp == 2:
-            p.NotasL.pop(p.NNotaT)
-            print(0)
-        elif resp == -1:
-            print('Resposta invalida')
-            valid=False
 
-        if valid:
-            break
+            resp = p.Confirir()
+            print(resp, 'resp')
+            if resp == 1:
+                print(1)
+                certo = True
+            elif resp == 0:
+                p.NotasL.pop(p.NNotaT)
+                print(p.NotasL, 'aqui')
+                print(0)
+            elif resp == -1:
+                print('Resposta invalida')
+                valid= False
+
+            if valid:
+                break
