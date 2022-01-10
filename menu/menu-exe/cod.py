@@ -87,7 +87,7 @@ class Notas():
         self.Vol = vol
         self.Pasta = pasta
         if str == 'Erro':
-            str = f'{self.Pasta}{self.NotaG}/{self.NomeG}_{self.Instr}.wav'
+            str = f'{self.Pasta}{self.NotaG}/{self.NomeG}{self.Casa}_{self.Instr}.wav'
         self.Str = str
 
 
@@ -188,9 +188,9 @@ class Questionario():
 
 #p
 a = Notas('a', '', 'violao')
-b = Notas('b', '', 'violao')
+b = Notas('b', '1', 'cavaquinho')
 c = Notas('c', '', 'violao')
-d = Notas('d', '', 'violao')
+d = Notas('d', '2', 'cavaquinho')
 notas = [a, b, c, d]
 
 for c in range(0, 2):
