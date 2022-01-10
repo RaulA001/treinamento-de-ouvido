@@ -123,10 +123,13 @@ class Pergunta():
     def __init__(self, notas='Erro-Notas', res='', notaT=''):
         self.NotaT = notaT
         #self.Som = posisão do som da notaT
-        self.Res = res
+        self.Res = res 
         self.Notas = notas
         #nota não jogadas
-        self.NotasL = notas
+        Notas = []
+        for n in notas:
+            Notas.append(n.NomeG)
+        self.NotasL = Notas
         
     def SetRes(self, res):
         self.Res = res
@@ -137,7 +140,7 @@ class Pergunta():
     def Apresentar(self):
         print('/ ', end='')
         for n in self.NotasL:
-            print(n.NomeG, end=' ')
+            print(n, end=' ')
         print('/')
 
     def init(self):
@@ -147,9 +150,8 @@ class Pergunta():
         self.NotaT = self.Notas[nt]
         self.NNotaT = n
 
-    def Confirir(self):
+    def Confirir(self, re):
         r = 0
-        re = Notas(self.Res)
         print(re.NotaC, self.NotaT.NotaC, re.Instr, self.NotaT.Instr)
         if re.C:
             if re.NotaC == self.NotaT.NotaC and (re.Instr == self.NotaT.Instr or True):
@@ -198,26 +200,21 @@ for c in range(0, 2):
     p.NotaT.Rep()
 
 
-    while True:
-        valid = True
-        certo = False
-        while not certo:
-            p.Apresentar()
-            p.SetRes(str(input('Qual é a nota: ')))
+    certo = False
+    while not certo:
 
-
-            resp = p.Confirir()
-            print(resp, 'resp')
-            if resp == 1:
-                print(1)
-                certo = True
-            elif resp == 0:
-                p.NotasL.pop(p.NNotaT)
-                print(p.NotasL, 'aqui')
-                print(0)
-            elif resp == -1:
-                print('Resposta invalida')
-                valid= False
-
-            if valid:
-                break
+        p.Apresentar()
+        p.SetRes(str(input('Qual é a nota: ')))
+        re = Notas(p.Res)
+        resp = p.Confirir(re)
+        print(resp, 'resp')
+        if resp == 1:
+            print(1)
+            certo = True
+        elif resp == 0:
+            pos = p.NotasL.index(re.NomeG)
+            p.NotasL.insert(pos, '')
+            p.NotasL.pop(pos + 1)
+            print(0)
+        elif resp == -1:
+            print('Resposta invalida')
